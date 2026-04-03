@@ -1,12 +1,13 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { TenderService } from '../../services/tender.service';
+import { FormsModule } from '@angular/forms';
+import { TenderService, TenderFilter } from '../../services/tender.service';
 import { TenderItem } from '../../models/tender.model';
 
 @Component({
   selector: 'app-tender-list',
-  imports: [DatePipe, DecimalPipe, RouterLink],
+  imports: [DatePipe, DecimalPipe, RouterLink, FormsModule],
   templateUrl: './tender-list.component.html',
   styleUrl: './tender-list.component.scss',
 })
@@ -20,6 +21,8 @@ export class TenderListComponent implements OnInit {
   loading = signal(false);
   error = signal<string | null>(null);
 
+  filter: TenderFilter = { tenderName: '', branchName: '', agencyName: '' };
+
   readonly pageSize = 6;
   readonly circleMax = 60;
 
@@ -30,18 +33,33 @@ export class TenderListComponent implements OnInit {
   loadTenders(): void {
     this.loading.set(true);
     this.error.set(null);
-    this.tenderService.getTenders(this.currentPage(), this.pageSize).subscribe({
-      next: (res) => {
-        this.tenders.set(res.data);
-        this.totalCount.set(res.totalCount);
-        this.totalPages.set(res.totalPages);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set('حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى.');
-        this.loading.set(false);
-      },
-    });
+    this.tenderService
+      .getTenders(this.currentPage(), this.pageSize, this.filter)
+      .subscribe({
+        next: (res) => {
+          this.tenders.set(res.data);
+          this.totalCount.set(res.totalCount);
+          this.totalPages.set(res.totalPages);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.error.set(
+            'حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى.',
+          );
+          this.loading.set(false);
+        },
+      });
+  }
+
+  applyFilter(): void {
+    this.currentPage.set(1);
+    this.loadTenders();
+  }
+
+  resetFilter(): void {
+    this.filter = { tenderName: '', branchName: '', agencyName: '' };
+    this.currentPage.set(1);
+    this.loadTenders();
   }
 
   goToPage(page: number): void {

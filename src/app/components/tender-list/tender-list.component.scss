@@ -43,8 +43,110 @@ $radius: 8px;
   border-radius: 20px;
 }
 
-// ── Loading / Error ──────────────────────────────────────
-.loading-state,
+// ── Filter Panel ─────────────────────────────────────────
+.filter-panel {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $text-secondary;
+}
+
+.filter-input {
+  padding: 8px 12px;
+  border: 1px solid $border;
+  border-radius: $radius;
+  font-size: 14px;
+  color: $text-primary;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  width: 100%;
+  font-family: inherit;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:focus {
+    border-color: $teal;
+    box-shadow: 0 0 0 3px rgba($teal, 0.12);
+  }
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.btn-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: $teal;
+  color: $white;
+  border: none;
+  padding: 8px 22px;
+  border-radius: $radius;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: $teal-dark;
+  }
+}
+
+.btn-reset {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: $white;
+  color: $text-secondary;
+  border: 1px solid $border;
+  padding: 8px 18px;
+  border-radius: $radius;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    background: #fff5f5;
+    border-color: #e53935;
+    color: #e53935;
+  }
+}
+
+// ── Loading / Error ──────────────────────────────────────.loading-state,
 .error-state {
   text-align: center;
   padding: 60px 16px;

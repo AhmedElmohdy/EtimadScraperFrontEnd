@@ -9,6 +9,50 @@
     }
   </div>
 
+  <!-- Filter Panel -->
+  <div class="filter-panel">
+    <div class="filter-row">
+      <div class="filter-field">
+        <label class="filter-label">اسم المناقصة</label>
+        <input
+          class="filter-input"
+          type="text"
+          placeholder="ابحث باسم المناقصة..."
+          [(ngModel)]="filter.tenderName"
+          (keyup.enter)="applyFilter()"
+        />
+      </div>
+      <div class="filter-field">
+        <label class="filter-label">اسم الجهة</label>
+        <input
+          class="filter-input"
+          type="text"
+          placeholder="ابحث باسم الجهة..."
+          [(ngModel)]="filter.agencyName"
+          (keyup.enter)="applyFilter()"
+        />
+      </div>
+      <div class="filter-field">
+        <label class="filter-label">اسم الفرع</label>
+        <input
+          class="filter-input"
+          type="text"
+          placeholder="ابحث باسم الفرع..."
+          [(ngModel)]="filter.branchName"
+          (keyup.enter)="applyFilter()"
+        />
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="btn-search" (click)="applyFilter()">
+        <span>&#128269;</span> بحث
+      </button>
+      <button class="btn-reset" (click)="resetFilter()">
+        <span>&#10006;</span> إعادة تعيين
+      </button>
+    </div>
+  </div>
+
   <!-- Loading -->
   @if (loading()) {
     <div class="loading-state">
