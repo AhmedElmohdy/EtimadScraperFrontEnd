@@ -1,11 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { TenderService } from '../../services/tender.service';
 import { TenderItem } from '../../models/tender.model';
 
 @Component({
   selector: 'app-tender-list',
-  imports: [DatePipe, DecimalPipe],
+  imports: [DatePipe, DecimalPipe, RouterLink],
   templateUrl: './tender-list.component.html',
   styleUrl: './tender-list.component.scss',
 })

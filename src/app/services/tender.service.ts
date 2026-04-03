@@ -1,7 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TenderListResponse } from '../models/tender.model';
+import {
+  TenderListResponse,
+  TenderDetailsResponse,
+} from '../models/tender.model';
 
 @Injectable({ providedIn: 'root' })
 export class TenderService {
@@ -14,7 +17,15 @@ export class TenderService {
       .set('pageSize', pageSize.toString());
 
     return this.http.get<TenderListResponse>(
-      `https://localhost:7000/api/tenders-integration/list`,
+      `${this.baseUrl}/tenders-integration/list`,
+      { params },
+    );
+  }
+
+  getTenderDetails(tenderId: string): Observable<TenderDetailsResponse> {
+    const params = new HttpParams().set('includeRawHtml', 'false');
+    return this.http.get<TenderDetailsResponse>(
+      `${this.baseUrl}/TenderScraper/details/${encodeURIComponent(tenderId)}`,
       { params },
     );
   }

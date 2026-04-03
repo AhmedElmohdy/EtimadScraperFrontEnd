@@ -77,7 +77,11 @@
 
               <!-- Actions row -->
               <div class="actions-row">
-                <a class="details-link">التفاصيل</a>
+                <a
+                  class="details-link"
+                  [routerLink]="['/tenders-details', tender.tenderId]"
+                  >التفاصيل</a
+                >
                 <span class="activity-badge">النشاط الأساسي</span>
               </div>
             </div>

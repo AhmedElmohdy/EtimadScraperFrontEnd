@@ -1,0 +1,349 @@
+<div class="details-wrapper" dir="rtl">
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>جاري تحميل البيانات...</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error()) {
+    <div class="error-state">
+      <p>{{ error() }}</p>
+      <a routerLink="/tenders" class="btn-back">العودة للقائمة</a>
+    </div>
+  }
+
+  @if (!loading() && !error() && details()) {
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2 class="page-title">تفاصيل المنافسة</h2>
+      <a routerLink="/tenders" class="btn-back-list">
+        <span>⊞</span> تفاصيل المنافسة
+      </a>
+    </div>
+    <hr class="header-divider" />
+
+    <!-- Tabs -->
+    <div class="tabs-nav">
+      @for (tab of tabs; track tab.key) {
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === tab.key"
+          (click)="setTab(tab.key)"
+        >
+          <span class="tab-icon">{{ getTabIcon(tab.key) }}</span>
+          <span class="tab-label">{{ tab.label }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- ── Basic Information ── -->
+      @if (activeTab() === "basic") {
+        <div class="section">
+          <div class="section-header">
+            <h3>المعلومات الأساسية</h3>
+          </div>
+          <div class="section-top-row">
+            <div class="org-icon">
+              <svg viewBox="0 0 60 60" width="56" height="56">
+                <rect
+                  x="5"
+                  y="30"
+                  width="50"
+                  height="25"
+                  rx="2"
+                  fill="#00a99d"
+                  opacity="0.15"
+                  stroke="#00a99d"
+                  stroke-width="1.5"
+                />
+                <rect
+                  x="20"
+                  y="38"
+                  width="20"
+                  height="17"
+                  rx="1"
+                  fill="#00a99d"
+                  opacity="0.3"
+                />
+                <rect
+                  x="15"
+                  y="22"
+                  width="30"
+                  height="10"
+                  rx="2"
+                  fill="#00a99d"
+                  opacity="0.4"
+                  stroke="#00a99d"
+                  stroke-width="1"
+                />
+                <rect
+                  x="25"
+                  y="14"
+                  width="10"
+                  height="9"
+                  rx="2"
+                  fill="#00a99d"
+                  opacity="0.6"
+                  stroke="#00a99d"
+                  stroke-width="1"
+                />
+                <circle cx="30" cy="10" r="4" fill="#00a99d" />
+              </svg>
+            </div>
+          </div>
+          <table class="info-table">
+            <tr>
+              <td class="label">اسم المنافسة</td>
+              <td class="value highlight">
+                {{ details()!.basicInformation.title }}
+              </td>
+              <td class="label">نوع المنافسة</td>
+              <td class="value">
+                {{ details()!.basicInformation.competitionType }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">رقم المنافسة</td>
+              <td class="value">
+                {{ details()!.basicInformation.tenderNumberIAM }}
+              </td>
+              <td class="label">الجهة الحكوميه</td>
+              <td class="value">
+                {{ details()!.basicInformation.organization }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">الرقم المرجعي</td>
+              <td class="value">
+                {{ details()!.basicInformation.referenceNumber }}
+              </td>
+              <td class="label">الوقت المتبقى</td>
+              <td class="value">
+                {{ details()!.basicInformation.remainingTime }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">الغرض من المنافسة</td>
+              <td class="value" colspan="3">
+                {{ cleanText(details()!.basicInformation.purpose) }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">قيمة وثائق المنافسة</td>
+              <td class="value fee-value">
+                {{ details()!.basicInformation.documentsValue }} &#x20AA;
+              </td>
+              <td class="label">طريقة تقديم العروض</td>
+              <td class="value">
+                {{ details()!.basicInformation.submissionMethod }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">حالة المنافسة</td>
+              <td class="value">
+                <span class="status-badge">{{
+                  details()!.basicInformation.status
+                }}</span>
+              </td>
+              <td class="label">مطلوب ضمان الإبتدائي</td>
+              <td class="value">
+                {{ details()!.basicInformation.initialGuaranteeRequirements }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">مدة العقد</td>
+              <td class="value">
+                {{ details()!.basicInformation.contractDuration }}
+              </td>
+              <td class="label">عنوان الضمان الإبتدائى</td>
+              <td class="value">
+                {{ details()!.basicInformation.initialGuaranteeTitle }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">هل التأمين من متطلبات المنافسة</td>
+              <td class="value">
+                {{ details()!.basicInformation.maintenanceInsurance }}
+              </td>
+              <td class="label">الضمان النهائي</td>
+              <td class="value">
+                {{ details()!.basicInformation.finalGuarantee }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      }
+
+      <!-- ── Dates & Deadlines ── -->
+      @if (activeTab() === "dates") {
+        <div class="section">
+          <h3 class="section-title-teal">
+            العناوين والمواعيد المتعلقة بالمنافسة
+          </h3>
+          <div class="dates-grid">
+            <div class="dates-col">
+              <table class="info-table dates-table">
+                <tr>
+                  <td class="label">آخر موعد لإستلام الإستفسارات</td>
+                  <td class="value">
+                    {{ details()!.datesAndDeadlines.inquiryDeadline }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">آخر موعد لتقديم العروض</td>
+                  <td class="value">
+                    {{ details()!.datesAndDeadlines.submissionDeadline }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">تاريخ فتح العروض</td>
+                  <td class="value">
+                    {{ details()!.datesAndDeadlines.offerOpeningDate }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">تاريخ فحص العروض</td>
+                  <td class="value">
+                    {{ details()!.datesAndDeadlines.technicalOfferOpeningDate }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">فترة التوقف</td>
+                  <td class="value">
+                    {{ details()!.datesAndDeadlines.stopPeriod }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">التاريخ المتوقع للترسية</td>
+                  <td class="value">
+                    {{ details()!.datesAndDeadlines.expectedAwardDate }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">تاريخ بدء الأعمال / الخدمات</td>
+                  <td class="value">
+                    {{ details()!.datesAndDeadlines.actionStartDate }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">بداية إرسال الأسئلة و الاستفسارات</td>
+                  <td class="value">
+                    {{
+                      details()!.datesAndDeadlines.questionSubmissionStartDate
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">اقصى مدة للاجابة على الاستفسارات</td>
+                  <td class="value">
+                    {{ details()!.datesAndDeadlines.maxQuestionResponseTime }}
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="opening-place-box">
+              <span class="label">مكان فتح العرض</span>
+              <span class="value">{{
+                details()!.datesAndDeadlines.openingPlace
+              }}</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- ── Classification & Execution ── -->
+      @if (activeTab() === "classification") {
+        <div class="section">
+          <h3 class="section-title-teal">تصنيف المقاولين</h3>
+          <table class="info-table">
+            <tr>
+              <td class="label">مجال التصنيف</td>
+              <td class="value">
+                {{ details()!.classificationAndExecution.tenderCondition }}
+              </td>
+            </tr>
+          </table>
+
+          <h3 class="section-title-teal mt-20">
+            مجال التصنيف وموقع التنفيذ والتقديم
+          </h3>
+          <table class="info-table">
+            <tr>
+              <td class="label">مكان التنفيذ</td>
+              <td class="value">
+                {{ details()!.classificationAndExecution.executionLocation }}
+              </td>
+              <td class="label">التفاصيل</td>
+              <td class="value">
+                {{ details()!.classificationAndExecution.description }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">نشاط المنافسة</td>
+              <td class="value" colspan="3">
+                {{ details()!.classificationAndExecution.category }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">تشمل المنافسة على بنود توريد</td>
+              <td class="value">
+                {{ details()!.classificationAndExecution.supplyItemsIncluded }}
+              </td>
+              <td class="label">أعمال الإنشاء</td>
+              <td class="value">
+                {{ details()!.classificationAndExecution.constructionWorks }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">أعمال الصيانة والتشغيل</td>
+              <td class="value" colspan="3">
+                {{
+                  details()!.classificationAndExecution
+                    .maintenanceAndOperationWorks
+                }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      }
+
+      <!-- ── Awarding Results ── -->
+      @if (activeTab() === "awarding") {
+        <div class="section">
+          <div class="empty-state">
+            <div class="empty-icon">&#9888;</div>
+            <p>
+              @if (details()!.awardingResults.awardingResultMessage) {
+                {{ details()!.awardingResults.awardingResultMessage }}
+              } @else {
+                لم يتم اعلان نتائج الترسية بعد
+              }
+            </p>
+          </div>
+        </div>
+      }
+
+      <!-- ── Local Content ── -->
+      @if (activeTab() === "localContent") {
+        <div class="section">
+          <h3 class="section-title-teal">
+            اشتراطات المحتوى المحلي المطبقة في المنافسة
+          </h3>
+          <table class="info-table">
+            <tr>
+              <td class="label">آليات المحتوى المحلي المطبقة في المنافسة</td>
+              <td class="value">
+                {{ details()!.localContent.localContentRequirements }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      }
+    </div>
+  }
+</div>
