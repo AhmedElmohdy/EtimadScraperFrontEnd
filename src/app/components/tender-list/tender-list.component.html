@@ -1,0 +1,168 @@
+<div class="page-wrapper" dir="rtl">
+  <!-- Header -->
+  <div class="page-header">
+    <h2 class="page-title">قائمة المناقصات والمشتريات</h2>
+    @if (totalCount() > 0) {
+      <span class="results-count"
+        >إجمالي النتائج: {{ totalCount() | number }}</span
+      >
+    }
+  </div>
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>جاري تحميل البيانات...</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error()) {
+    <div class="error-state">
+      <p>{{ error() }}</p>
+      <button class="btn-retry" (click)="loadTenders()">إعادة المحاولة</button>
+    </div>
+  }
+
+  <!-- Tender Cards -->
+  @if (!loading() && !error()) {
+    <div class="tender-list">
+      @for (tender of tenders(); track tender.id) {
+        <div class="tender-card">
+          <!-- Card Top: Circle + Body -->
+          <div class="card-top">
+            <!-- Circle indicator -->
+            <div class="card-left">
+              <div class="circle-wrapper">
+                <svg viewBox="0 0 80 80" class="circle-svg">
+                  <circle cx="40" cy="40" r="34" class="circle-track" />
+                  <circle
+                    cx="40"
+                    cy="40"
+                    r="34"
+                    class="circle-progress"
+                    [attr.stroke-dasharray]="
+                      getCircleDashArray(tender.remainingDays)
+                    "
+                    [attr.stroke]="getCircleColor(tender.remainingDays)"
+                  />
+                </svg>
+                <span class="circle-days">{{ tender.remainingDays }}</span>
+              </div>
+              <div class="remaining-time">
+                {{ tender.remainingDays }} يوم {{ tender.remainingHours }} ساعة
+              </div>
+            </div>
+
+            <!-- Card body -->
+            <div class="card-body">
+              <!-- Meta row -->
+              <div class="meta-row">
+                <span class="tender-type-badge">{{
+                  tender.tenderTypeName
+                }}</span>
+                <span class="publish-date">
+                  تاريخ النشر: {{ tender.submitionDate | date: "dd-MM-yyyy" }}
+                </span>
+              </div>
+
+              <!-- Tender name -->
+              <h3 class="tender-name">{{ tender.tenderName }}</h3>
+
+              <!-- Agency -->
+              <div class="agency-info">
+                {{ tender.agencyName }} - {{ tender.branchName }}
+              </div>
+
+              <!-- Actions row -->
+              <div class="actions-row">
+                <a class="details-link">التفاصيل</a>
+                <span class="activity-badge">النشاط الأساسي</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="card-footer">
+            <div class="footer-col">
+              <div class="footer-label">الرقم المرجعي</div>
+              <div class="footer-value">{{ tender.referenceNumber }}</div>
+            </div>
+            <div class="footer-col">
+              <div class="footer-label">آخر موعد لإستلام الإستفسارات</div>
+              <div class="footer-value">
+                <span class="icon-cal">&#128197;</span>
+                {{ tender.lastEnqueriesDate | date: "yyyy-MM-dd" }}
+              </div>
+            </div>
+            <div class="footer-col">
+              <div class="footer-label">آخر موعد لتقديم العروض</div>
+              <div class="footer-value">
+                <span class="icon-cal">&#128197;</span>
+                {{ tender.lastOfferPresentationDate | date: "yyyy-MM-dd" }}
+                <span class="offer-time">
+                  <span class="icon-clock">&#128336;</span>
+                  {{ tender.lastOfferPresentationDate | date: "HH:mm" }}
+                </span>
+              </div>
+            </div>
+            <div class="footer-col fees-col">
+              <div class="footer-label">قيمة وثائق المنافسة</div>
+              <div class="footer-value fees-value">
+                {{ formatFees(tender.buyingCost) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Pagination -->
+    @if (totalPages() > 1) {
+      <div class="pagination">
+        <button
+          class="page-btn"
+          [disabled]="currentPage() === 1"
+          (click)="goToPage(currentPage() - 1)"
+        >
+          &rsaquo; السابق
+        </button>
+
+        @if (currentPage() > 3) {
+          <button class="page-btn" (click)="goToPage(1)">1</button>
+          @if (currentPage() > 4) {
+            <span class="page-ellipsis">...</span>
+          }
+        }
+
+        @for (page of getPageNumbers(); track page) {
+          <button
+            class="page-btn"
+            [class.active]="page === currentPage()"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        }
+
+        @if (currentPage() < totalPages() - 2) {
+          @if (currentPage() < totalPages() - 3) {
+            <span class="page-ellipsis">...</span>
+          }
+          <button class="page-btn" (click)="goToPage(totalPages())">
+            {{ totalPages() }}
+          </button>
+        }
+
+        <button
+          class="page-btn"
+          [disabled]="currentPage() === totalPages()"
+          (click)="goToPage(currentPage() + 1)"
+        >
+          التالي &lsaquo;
+        </button>
+      </div>
+    }
+  }
+</div>
