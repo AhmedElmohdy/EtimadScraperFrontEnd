@@ -73,6 +73,7 @@ export interface TenderItem {
   financialFees: number;
   invitationCost: number;
   buyingCost: number;
+  condetionalBookletPrice: number;
 }
 
 export interface TenderListResponse {

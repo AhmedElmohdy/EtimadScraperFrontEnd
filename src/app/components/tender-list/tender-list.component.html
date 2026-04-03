@@ -114,7 +114,12 @@
             <div class="footer-col fees-col">
               <div class="footer-label">قيمة وثائق المنافسة</div>
               <div class="footer-value fees-value">
-                {{ formatFees(tender.buyingCost) }}
+                {{
+                  formatFees(
+                    (tender.buyingCost || 0) +
+                      (tender.condetionalBookletPrice || 0)
+                  )
+                }}
               </div>
             </div>
           </div>
