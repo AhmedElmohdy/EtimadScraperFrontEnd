@@ -83,3 +83,9 @@ export interface TenderListResponse {
   totalPages: number;
   data: TenderItem[];
 }
+
+export interface TenderCounts {
+  todayCount: number;
+  yesterdayCount: number;
+  last7DaysCount: number;
+}

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   TenderListResponse,
   TenderDetailsResponse,
+  TenderCounts,
 } from '../models/tender.model';
 
 export interface TenderFilter {
@@ -41,6 +42,12 @@ export class TenderService {
     return this.http.get<TenderDetailsResponse>(
       `${this.baseUrl}/TenderScraper/details/${encodeURIComponent(tenderId)}`,
       { params },
+    );
+  }
+
+  getTenderCounts(): Observable<TenderCounts> {
+    return this.http.get<TenderCounts>(
+      `${this.baseUrl}/tenders-integration/counts`,
     );
   }
 }

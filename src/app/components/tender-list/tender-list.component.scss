@@ -449,8 +449,125 @@ $radius: 8px;
   padding: 0 4px;
 }
 
+// ── Stat Cards ───────────────────────────────────────────
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 18px 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  border-right: 4px solid transparent;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  }
+
+  &--today {
+    border-right-color: $teal;
+
+    .stat-icon {
+      background: $teal-light;
+      color: $teal;
+    }
+
+    .stat-value {
+      color: $teal;
+    }
+  }
+
+  &--yesterday {
+    border-right-color: #fb8c00;
+
+    .stat-icon {
+      background: #fff3e0;
+      color: #fb8c00;
+    }
+
+    .stat-value {
+      color: #fb8c00;
+    }
+  }
+
+  &--week {
+    border-right-color: #5c6bc0;
+
+    .stat-icon {
+      background: #ede7f6;
+      color: #5c6bc0;
+    }
+
+    .stat-value {
+      color: #5c6bc0;
+    }
+  }
+}
+
+.stat-icon {
+  font-size: 24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: $text-secondary;
+  font-weight: 600;
+}
+
+.stat-skeleton {
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+  background: linear-gradient(90deg, #e2e8f0 25%, #edf2f7 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  border-radius: 4px;
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 // ── Responsive ───────────────────────────────────────────
 @media (max-width: 640px) {
+  .stat-cards {
+    grid-template-columns: 1fr;
+  }
+
   .card-top {
     flex-direction: column;
     align-items: flex-start;

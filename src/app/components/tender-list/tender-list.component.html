@@ -9,6 +9,51 @@
     }
   </div>
 
+  <!-- Stat Cards -->
+  <div class="stat-cards">
+    <div class="stat-card stat-card--today">
+      <div class="stat-icon">&#128197;</div>
+      <div class="stat-content">
+        <div class="stat-value">
+          @if (countsLoading()) {
+            <span class="stat-skeleton"></span>
+          } @else {
+            {{ counts()?.todayCount ?? "—" | number }}
+          }
+        </div>
+        <div class="stat-label">مناقصات اليوم</div>
+      </div>
+    </div>
+
+    <div class="stat-card stat-card--yesterday">
+      <div class="stat-icon">&#128336;</div>
+      <div class="stat-content">
+        <div class="stat-value">
+          @if (countsLoading()) {
+            <span class="stat-skeleton"></span>
+          } @else {
+            {{ counts()?.yesterdayCount ?? "—" | number }}
+          }
+        </div>
+        <div class="stat-label">مناقصات أمس</div>
+      </div>
+    </div>
+
+    <div class="stat-card stat-card--week">
+      <div class="stat-icon">&#128200;</div>
+      <div class="stat-content">
+        <div class="stat-value">
+          @if (countsLoading()) {
+            <span class="stat-skeleton"></span>
+          } @else {
+            {{ counts()?.last7DaysCount ?? "—" | number }}
+          }
+        </div>
+        <div class="stat-label">آخر 7 أيام</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Filter Panel -->
   <div class="filter-panel">
     <div class="filter-row">

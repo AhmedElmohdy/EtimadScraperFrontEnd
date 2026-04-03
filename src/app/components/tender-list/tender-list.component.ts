@@ -3,7 +3,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TenderService, TenderFilter } from '../../services/tender.service';
-import { TenderItem } from '../../models/tender.model';
+import { TenderItem, TenderCounts } from '../../models/tender.model';
 
 @Component({
   selector: 'app-tender-list',
@@ -21,6 +21,9 @@ export class TenderListComponent implements OnInit {
   loading = signal(false);
   error = signal<string | null>(null);
 
+  counts = signal<TenderCounts | null>(null);
+  countsLoading = signal(false);
+
   filter: TenderFilter = { tenderName: '', branchName: '', agencyName: '' };
 
   readonly pageSize = 6;
@@ -28,6 +31,20 @@ export class TenderListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTenders();
+    this.loadCounts();
+  }
+
+  loadCounts(): void {
+    this.countsLoading.set(true);
+    this.tenderService.getTenderCounts().subscribe({
+      next: (res) => {
+        this.counts.set(res);
+        this.countsLoading.set(false);
+      },
+      error: () => {
+        this.countsLoading.set(false);
+      },
+    });
   }
 
   loadTenders(): void {
